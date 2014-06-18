@@ -47,7 +47,7 @@ public class AndroidPlatformStrategy extends PlatformStrategy
     {
         /** (Re)initialize the CountDownLatch. */
         // TODO - You fill in here.
-    	mLatch = new CountDownLatch(2);
+    	mLatch = new CountDownLatch(NUMBER_OF_THREADS);
     }
 
     /** Print the outputString to the display. */
@@ -58,13 +58,13 @@ public class AndroidPlatformStrategy extends PlatformStrategy
          * and appends the outputString to a TextView. 
          */
         // TODO - You fill in here.
-    	mTextViewOutput.appendText(outputString);
+    	
     	Runnable mTask = new Runnable() {
     	    public void run() {
     	        
                     try {
                         
-                        runOnUiThread(done);
+                        runOnUiThread(mTextViewOutput.append(outputString));
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -84,7 +84,10 @@ public class AndroidPlatformStrategy extends PlatformStrategy
     public void awaitDone()
     {
         // TODO - You fill in here.
-    	mLatch.await();
+    	try {
+            mLatch.await();
+        } catch(java.lang.InterruptedException e) {
+        }
     }
 
     /** 
